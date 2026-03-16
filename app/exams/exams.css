@@ -1,0 +1,41 @@
+.exam-container {
+  min-height: 100vh;
+  background: #0e2a47;
+  padding: 40px;
+  text-align: center;
+}
+
+.title {
+  color: white;
+  font-size: 32px;
+  margin-bottom: 40px;
+}
+
+.exam-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  gap: 20px;
+  max-width: 800px;
+  margin: auto;
+}
+
+.exam-card {
+  background: #ff7fa2;
+  color: white;
+  padding: 18px;
+  border-radius: 20px;
+  font-weight: bold;
+  text-decoration: none;
+  box-shadow: 0 6px 0 #d65d80;
+  transition: all 0.2s ease;
+}
+
+.exam-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 10px 0 #d65d80;
+}
+
+.exam-card:active {
+  transform: translateY(2px);
+  box-shadow: 0 3px 0 #d65d80;
+}

@@ -1,0 +1,54 @@
+
+{
+  "questions": [
+    {
+      "_id": "661000000000000000000001",
+      "question": "2 + 2 = ?",
+      "options": ["1", "2", "3", "4"],
+      "correctAnswer": 3
+    },
+    {
+      "_id": "661000000000000000000002",
+      "question": "Capital of France?",
+      "options": ["Berlin", "Paris", "Rome", "Madrid"],
+      "correctAnswer": 1
+    },
+    {
+      "_id": "661000000000000000000003",
+      "question": "Which language runs in browser?",
+      "options": ["Python", "Java", "JavaScript", "C++"],
+      "correctAnswer": 2
+    },
+    {
+      "_id": "661000000000000000000004",
+      "question": "5 x 3 = ?",
+      "options": ["10", "15", "20", "25"],
+      "correctAnswer": 1
+    }
+  ],
+
+  "exams": [
+    {
+      "_id": "662000000000000000000001",
+      "title": "Basic Knowledge Test",
+      "description": "Simple demo exam",
+      "questions": [
+        "661000000000000000000001",
+        "661000000000000000000002",
+        "661000000000000000000003",
+        "661000000000000000000004"
+      ],
+      "createdAt": "2026-03-15T00:00:00.000Z"
+    }
+  ],
+
+  "results": [
+    {
+      "_id": "663000000000000000000001",
+      "examId": "662000000000000000000001",
+      "answers": [3, 1, 2, 1],
+      "score": 4,
+      "createdAt": "2026-03-15T00:10:00.000Z"
+    }
+  ]
+}
