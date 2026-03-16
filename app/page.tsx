@@ -49,7 +49,7 @@ export default function Home() {
 
         <button
           onClick={() => router.push("/admin")}
-          className="w-full bg-gray-200 hover:bg-gray-300 transition py-3 rounded-lg font-semibold"
+          className="w-full text-black bg-gray-200 hover:bg-gray-300 transition py-3 rounded-lg font-semibold"
         >
           Admin Panel
         </button>
