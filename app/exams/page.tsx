@@ -9,18 +9,18 @@ export default function ExamsPage() {
 
   const [exams, setExams] = useState<ExamType[]>([])
 
- useEffect(() => {
-  const fetchExams = async () => {
-    try {
-      const res = await axios.get("/api/exam/list")
-      setExams(res.data)
-    } catch (error) {
-      console.error(error)
+  useEffect(() => {
+    const fetchExams = async () => {
+      try {
+        const res = await axios.get("/api/exam/list")
+        setExams(res.data)
+      } catch (error) {
+        console.error(error)
+      }
     }
-  }
 
-  fetchExams()
-}, [])
+    fetchExams()
+  }, [])
 
 
   return (
@@ -29,9 +29,17 @@ export default function ExamsPage() {
 
       <div className="w-full max-w-4xl p-8">
 
-        <h1 className="text-3xl font-bold mb-8">
-          Available Exams
-        </h1>
+        <Link href="/">
+          <button className="flex mb-5 items-center gap-2 px-4 py-2 bg-white border border-gray-300 rounded-lg shadow-sm text-gray-700 font-medium hover:bg-gray-100 hover:shadow transition">
+            ← Back
+          </button>
+        </Link>
+        <div className="flex items-center gap-4 mb-8 mt-2">
+          <h1 className="text-3xl font-bold">
+            Available Exams
+          </h1>
+
+        </div>
 
         <div className="grid gap-6">
 
