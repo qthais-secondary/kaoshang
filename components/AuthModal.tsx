@@ -10,6 +10,7 @@ type Props = {
   password: string
   setUsername: (v: string) => void
   setPassword: (v: string) => void
+  loading: boolean
 }
 
 export default function AuthModal({
@@ -22,6 +23,7 @@ export default function AuthModal({
   password,
   setUsername,
   setPassword,
+  loading,
 }: Props) {
   if (!open) return null
 
@@ -39,7 +41,8 @@ export default function AuthModal({
         </h2>
 
         <input
-          className="w-full border p-3 mb-4 rounded-lg"
+          disabled={loading}
+          className="w-full border p-3 mb-4 rounded-lg disabled:opacity-50"
           placeholder="Username"
           value={username}
           onChange={(e) => setUsername(e.target.value)}
@@ -47,7 +50,8 @@ export default function AuthModal({
 
         <input
           type="password"
-          className="w-full border p-3 mb-4 rounded-lg"
+          disabled={loading}
+          className="w-full border p-3 mb-4 rounded-lg disabled:opacity-50"
           placeholder="Password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
@@ -57,7 +61,7 @@ export default function AuthModal({
           {mode === "login" ? "Chưa có tài khoản?" : "Đã có tài khoản?"}{" "}
           <span
             onClick={() =>
-              setMode(mode === "login" ? "register" : "login")
+              !loading && setMode(mode === "login" ? "register" : "login")
             }
             className="text-primary font-semibold cursor-pointer"
           >
@@ -67,9 +71,19 @@ export default function AuthModal({
 
         <button
           onClick={onSubmit}
-          className="w-full bg-primary text-white py-3 rounded-lg font-bold"
+          disabled={loading}
+          className="w-full bg-primary text-white py-3 rounded-lg font-bold flex items-center justify-center gap-2 disabled:opacity-70"
         >
-          {mode === "login" ? "Đăng nhập" : "Tạo tài khoản"}
+          {loading ? (
+            <>
+              <span className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" />
+              Đang xử lý...
+            </>
+          ) : mode === "login" ? (
+            "Đăng nhập"
+          ) : (
+            "Tạo tài khoản"
+          )}
         </button>
       </div>
     </div>

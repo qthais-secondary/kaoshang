@@ -3,7 +3,7 @@
 import { useState } from "react"
 import Header from "@/components/Header"
 import AuthModal from "@/components/AuthModal"
-import { AuthProvider, useAuth } from "@/context/AuthContext" 
+import { AuthProvider, useAuth } from "@/context/AuthContext"
 
 function InnerShell({ children }: { children: React.ReactNode }) {
   const [open, setOpen] = useState(false)
@@ -12,6 +12,8 @@ function InnerShell({ children }: { children: React.ReactNode }) {
   const [password, setPassword] = useState("")
 
   const { login } = useAuth()
+  const [loading, setLoading] = useState(false)
+
 
   const handleSubmit = async () => {
     if (!username || !password) return alert("Nhập đầy đủ")
@@ -21,6 +23,8 @@ function InnerShell({ children }: { children: React.ReactNode }) {
         ? "/api/auth/login"
         : "/api/auth/register"
 
+    setLoading(true)
+
     const res = await fetch(endpoint, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -29,6 +33,7 @@ function InnerShell({ children }: { children: React.ReactNode }) {
 
     const data = await res.json()
     if (!res.ok) return alert(data.message)
+    setLoading(false)
 
     // 🔥 dùng context thay vì localStorage trực tiếp
     login(data.user)
@@ -59,6 +64,7 @@ function InnerShell({ children }: { children: React.ReactNode }) {
         password={password}
         setPassword={setPassword}
         onSubmit={handleSubmit}
+        loading={loading}
       />
     </>
   )
