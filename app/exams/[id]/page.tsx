@@ -236,7 +236,7 @@ export default function ExamPage() {
                                 </button>
 
                                 <button
-                                    onClick={() => router.push(`/result/${result.resultId}`)}
+                                    onClick={() => router.push(`/results/${result.resultId}`)}
                                     className="
                     px-4 py-2 rounded-xl font-medium text-white
                     bg-green-500 hover:bg-green-600 transition
