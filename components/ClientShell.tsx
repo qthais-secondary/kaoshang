@@ -10,7 +10,6 @@ function InnerShell({ children }: { children: React.ReactNode }) {
   const [mode, setMode] = useState<"login" | "register">("login")
   const [username, setUsername] = useState("")
   const [password, setPassword] = useState("")
-
   const { login } = useAuth()
   const [loading, setLoading] = useState(false)
 
@@ -32,11 +31,16 @@ function InnerShell({ children }: { children: React.ReactNode }) {
     })
 
     const data = await res.json()
-    if (!res.ok) return alert(data.message)
+    if (!res.ok) {
+      alert(data.message)
+      setLoading(false)
+      return;
+    } 
     setLoading(false)
 
     // 🔥 dùng context thay vì localStorage trực tiếp
     login(data.user)
+    console.log("user data", )
 
     setUsername("")
     setPassword("")
@@ -76,8 +80,6 @@ export default function ClientShell({
   children: React.ReactNode
 }) {
   return (
-    <AuthProvider>
       <InnerShell>{children}</InnerShell>
-    </AuthProvider>
   )
 }

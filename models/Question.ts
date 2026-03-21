@@ -2,11 +2,33 @@ import mongoose from "mongoose"
 
 const QuestionSchema = new mongoose.Schema({
 
-  question: String,
+  question: {
+    type: String,
+    required: true
+  },
 
-  options: [String],
+  options: {
+    type: [String],
+    required: true
+  },
 
-  correctAnswer: Number
+  correctAnswer: {
+    type: Number,
+    required: true
+  },
+
+  explanation: String, // 👈 để review lại
+
+  difficulty: {
+    type: String,
+    enum: ["easy", "medium", "hard"],
+    default: "medium"
+  },
+
+  createdAt: {
+    type: Date,
+    default: Date.now
+  }
 
 })
 

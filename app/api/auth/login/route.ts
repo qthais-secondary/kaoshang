@@ -27,6 +27,7 @@ export async function POST(req: Request) {
     return NextResponse.json({
       message: "Login thành công",
       user: {
+        _id: user._id.toString(),
         username: user.username,
         role: user.role,
       },

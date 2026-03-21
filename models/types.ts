@@ -1,4 +1,3 @@
-
 import { Types } from "mongoose"
 
 /* =========================
@@ -7,41 +6,109 @@ import { Types } from "mongoose"
 
 export interface QuestionType {
   _id?: Types.ObjectId
+
   question: string
+
   options: string[]
+
   correctAnswer: number
-}
 
-/* =========================
-   Exam (dùng cho frontend)
-========================= */
+  explanation?: string
 
-export interface ExamType {
-  _id?: Types.ObjectId
-  title: string
-  description: string
-  questions: QuestionType[]
+  difficulty?: "easy" | "medium" | "hard"
+
   createdAt?: Date
 }
 
 /* =========================
-   Result
+   Exam
 ========================= */
 
-export type ResultAnswer = {
+export interface ExamType {
+  _id?: Types.ObjectId
 
-  question: string
-  selected: number
-  correct: boolean
+  title: string
 
+  description: string
+
+  questions: QuestionType[]
+
+  createdAt?: Date
 }
 
-export type ResultType = {
+/* =========================
+   Result - Answer (snapshot)
+========================= */
+
+export interface ResultAnswerType {
+  questionId: Types.ObjectId
+
+  questionText: string
+
+  options: string[]
+
+  selected: number
+
+  correctAnswer: number
+
+  isCorrect: boolean
+}
+
+/* =========================
+   Result (FULL)
+========================= */
+
+export interface ResultType {
+  _id?: Types.ObjectId
+
+  user?: Types.ObjectId
+
+  exam: Types.ObjectId
+
+  examTitle: string
+
+  answers: ResultAnswerType[]
 
   score: number
-  total: number
-  answers: ResultAnswer[]
-  correctAnswers: number[]
 
+  totalQuestions: number
+
+  correctCount: number
+
+  duration?: number
+
+  status?: "completed" | "timeout"
+
+  createdAt?: Date
 }
 
+/* =========================
+   API: Submit Response
+========================= */
+
+export interface SubmitResponse {
+  score: number
+  total: number
+  correctCount: number
+  resultId: string
+}
+
+/* =========================
+   History List Item
+========================= */
+
+export interface HistoryItemType {
+  _id: string
+
+  examTitle: string
+
+  score: number
+
+  totalQuestions: number
+
+  correctCount: number
+
+  duration?: number
+
+  createdAt: Date
+}

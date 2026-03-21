@@ -1,5 +1,6 @@
 import "./globals.css"
 import ClientShell from "@/components/ClientShell"
+import { AuthProvider } from "@/context/AuthContext"
 
 export default function RootLayout({
   children,
@@ -9,7 +10,9 @@ export default function RootLayout({
   return (
     <html lang="vi">
       <body>
-        <ClientShell>{children}</ClientShell>
+        <AuthProvider>
+          <ClientShell>{children}</ClientShell>
+        </AuthProvider>
       </body>
     </html>
   )

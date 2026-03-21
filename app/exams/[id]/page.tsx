@@ -3,149 +3,167 @@
 import { useEffect, useState } from "react"
 import axios from "axios"
 import { useParams, useRouter } from "next/navigation"
-import { ExamType, ResultType } from "@/models/types"
+import { ExamType, SubmitResponse } from "@/models/types"
+import { useAuth } from "@/context/AuthContext"
 
 export default function ExamPage() {
-
+    const { user } = useAuth()
     const { id } = useParams()
     const router = useRouter()
 
     const [exam, setExam] = useState<ExamType | null>(null)
     const [answers, setAnswers] = useState<number[]>([])
-    const [result, setResult] = useState<ResultType | null>(null)
+    const [result, setResult] = useState<SubmitResponse | null>(null)
     const [isSubmit, setIsSubmit] = useState(false)
     const [time, setTime] = useState(600)
 
+    // FETCH EXAM
     useEffect(() => {
-
         if (!id) return
 
         const fetchExam = async () => {
-
-            const res = await axios.get<ExamType>(
-                `/api/exam/get?id=${id}`
-            )
+            const res = await axios.get<ExamType>(`/api/exam/get?id=${id}`)
 
             setExam(res.data)
-
-            setAnswers(
-                new Array(res.data.questions.length).fill(-1)
-            )
-
+            setAnswers(new Array(res.data.questions.length).fill(-1))
         }
 
         fetchExam()
-
     }, [id])
 
+    // SUBMIT
     async function submitExam() {
-
         if (result) return
+
         setIsSubmit(true)
-        const res = await axios.post(
-            "/api/exam/submit",
-            {
-                examId: id,
-                answers
-            }
-        )
+
+        try {
+
+            const examId = Array.isArray(id) ? id[0] : id
+
+            // 🔥 clean answers
+            const cleanedAnswers = answers.map(a => a === -1 ? null : a)
+
+            const res = await axios.post("/api/exam/submit", {
+                userId: user?._id,
+                examId,
+                answers: cleanedAnswers,
+                duration: 600 - time
+            })
+            console.log({res})
+
+            setResult(res.data)
+
+        } catch (err) {
+            console.error(err)
+        }
+
         setIsSubmit(false)
-
-        setResult(res.data)
-
     }
 
+    // TIMER
     useEffect(() => {
-
         const timer = setInterval(() => {
-
             setTime((t) => {
-
                 if (t <= 0) {
-
                     clearInterval(timer)
                     submitExam()
                     return 0
-
                 }
-
                 return t - 1
-
             })
-
         }, 1000)
 
         return () => clearInterval(timer)
-
     }, [])
 
-    if (!exam) return <div className="p-10">Loading...</div>
+    if (!exam) {
+        return (
+            <div className="min-h-screen flex items-center justify-center bg-[#f8fafc]">
+                <div className="text-gray-500 text-lg">Loading...</div>
+            </div>
+        )
+    }
 
     const minutes = Math.floor(time / 60)
     const seconds = time % 60
 
-    return (
+    const answeredCount = answers.filter(a => a !== -1).length
 
-        <div className="min-h-screen bg-[#1b2a4a] flex justify-center gap-10 p-10">
+    return (
+        <div className="min-h-screen bg-[#f8fafc] flex justify-center gap-6 p-6">
 
             {/* LEFT PANEL */}
+            <div className="w-72">
 
-            <div className="w-64">
+                <div className="sticky top-6 bg-white rounded-2xl p-6 shadow-md border border-gray-100">
 
-                <div className="sticky top-10 bg-white rounded-3xl p-6 shadow-lg">
-
-                    <div className="text-center text-4xl font-bold mb-6">
+                    {/* TIMER */}
+                    <div className="text-center text-3xl font-bold text-[var(--primary)] mb-6">
                         {minutes}:{seconds.toString().padStart(2, "0")}
                     </div>
 
-                    <div className="flex flex-wrap gap-3 justify-center mb-6">
+                    {/* PROGRESS */}
+                    <div className="mb-6">
+                        <div className="text-sm text-gray-500 mb-2 text-center">
+                            {answeredCount} / {answers.length} câu
+                        </div>
 
+                        <div className="h-2 bg-gray-200 rounded-full overflow-hidden">
+                            <div
+                                className="h-full bg-[var(--primary)] transition-all"
+                                style={{
+                                    width: `${(answeredCount / answers.length) * 100}%`
+                                }}
+                            />
+                        </div>
+                    </div>
+
+                    {/* QUESTION NAV */}
+                    <div className="flex flex-wrap gap-2 justify-center mb-6">
                         {answers.map((a, i) => (
-
                             <button
                                 key={i}
                                 onClick={() => {
-
                                     document
                                         .getElementById(`question-${i}`)
-                                        ?.scrollIntoView({
-                                            behavior: "smooth"
-                                        })
-
+                                        ?.scrollIntoView({ behavior: "smooth" })
                                 }}
-                                className={`w-10 h-10 rounded-full text-white font-bold
-                ${a !== -1
-                                        ? "bg-green-500"
-                                        : "bg-red-500"
-                                    }`}
+                                className={`
+                  w-9 h-9 rounded-lg text-sm font-semibold transition
+                  ${a !== -1
+                                        ? "bg-[var(--primary)] text-white"
+                                        : "bg-gray-200 text-gray-600 hover:bg-gray-300"
+                                    }
+                `}
                             >
                                 {i + 1}
                             </button>
-
                         ))}
-
                     </div>
 
+                    {/* SUBMIT */}
                     <button
                         onClick={submitExam}
-                        disabled={isSubmit}
-                        className={`w-full font-bold py-3 rounded-xl text-lg text-white cursor-pointer bg-pink-500 hover:bg-pink-600`}
+                        disabled={isSubmit || !!result}
+                        className="
+              w-full py-3 rounded-xl font-semibold text-white
+              bg-[var(--primary)] hover:opacity-90 transition
+              disabled:opacity-50
+            "
                     >
-                        {isSubmit ? "Đang nộp bài..." : "Nộp bài"}
+                        {isSubmit ? "Đang nộp..." : result ? "Đã nộp" : "Nộp bài"}
                     </button>
 
                 </div>
-
             </div>
 
-
             {/* QUESTIONS */}
-
             <div className="w-full max-w-3xl">
 
-                <div className="bg-white p-8 rounded-xl shadow">
+                <div className="bg-white p-8 rounded-2xl shadow-md border border-gray-100">
 
-                    <h1 className="text-3xl font-bold mb-4">
+                    <h1 className="text-2xl font-bold mb-6 text-gray-800">
                         {exam.title}
                     </h1>
 
@@ -154,113 +172,100 @@ export default function ExamPage() {
                         <div
                             id={`question-${qi}`}
                             key={qi}
-                            className="mt-8 p-6 border rounded-lg bg-gray-50"
+                            className="mt-6 p-6 rounded-xl border border-gray-200 bg-gray-50"
                         >
 
-                            <h2 className="font-semibold text-lg mb-3">
-
+                            <h2 className="font-semibold text-base mb-4 text-gray-800">
                                 {qi + 1}. {q.question}
-
                             </h2>
 
-                            {q.options.map((op, oi) => {
+                            <div className="flex flex-col gap-3">
 
-                                let color = ""
-
-                                if (result) {
-
-                                    if (oi === result.correctAnswers[qi]) {
-                                        color = "bg-green-200 border-green-500"
-                                    }
-
-                                    else if (answers[qi] === oi) {
-                                        color = "bg-red-200 border-red-500"
-                                    }
-
-                                }
-
-                                return (
-
+                                {q.options.map((op, oi) => (
                                     <label
                                         key={oi}
-                                        className={`flex items-center gap-3 p-2 rounded border cursor-pointer ${color}`}
+                                        className={`
+                      flex items-center gap-3 p-3 rounded-xl border transition cursor-pointer
+                      border-gray-200 hover:border-[var(--primary)]
+                      ${result ? "opacity-70 cursor-not-allowed" : ""}
+                    `}
                                     >
-
                                         <input
                                             type="radio"
                                             disabled={!!result}
                                             name={`q-${qi}`}
                                             checked={answers[qi] === oi}
-                                            className="accent-blue-500"
+                                            className="accent-[var(--primary)]"
                                             onChange={() => {
-
                                                 const copy = [...answers]
                                                 copy[qi] = oi
-
                                                 setAnswers(copy)
-
                                             }}
                                         />
 
-                                        {op}
-
+                                        <span className="text-gray-700">{op}</span>
                                     </label>
+                                ))}
 
-                                )
-
-                            })}
-
+                            </div>
                         </div>
-
                     ))}
 
-
+                    {/* RESULT */}
                     {result && (
+                        <div className="mt-8 p-6 bg-blue-50 border border-blue-200 rounded-2xl">
 
-                        <div className="mt-8 p-6 bg-green-100 border border-green-300 rounded-lg">
-
-                            <div className="text-xl font-bold text-green-800 mb-4">
+                            <div className="text-xl font-bold text-[var(--primary)] mb-2">
                                 Score: {result.score} / {result.total}
                             </div>
 
-                            <div className="flex gap-4">
+                            <div className="text-sm text-gray-600 mb-4">
+                                Correct: {result.correctCount}
+                            </div>
+
+                            <div className="flex gap-3">
 
                                 <button
                                     onClick={() => router.push("/exams")}
-                                    className="cursor-pointer px-4 py-2 bg-blue-400 text-white rounded-lg hover:bg-blue-500"
+                                    className="
+                    px-4 py-2 rounded-xl font-medium text-white
+                    bg-gray-500 hover:bg-gray-600 transition
+                  "
                                 >
                                     Back
                                 </button>
 
                                 <button
+                                    onClick={() => router.push(`/result/${result.resultId}`)}
+                                    className="
+                    px-4 py-2 rounded-xl font-medium text-white
+                    bg-green-500 hover:bg-green-600 transition
+                  "
+                                >
+                                    Review
+                                </button>
+
+                                <button
                                     onClick={() => {
-
                                         setResult(null)
-
-                                        setAnswers(
-                                            new Array(exam.questions.length).fill(-1)
-                                        )
-
+                                        setAnswers(new Array(exam.questions.length).fill(-1))
                                         setTime(600)
-
                                     }}
-                                    className="cursor-pointer px-4 py-2 bg-pink-500 hover:bg-pink-600 text-white rounded-lg"
+                                    className="
+                    px-4 py-2 rounded-xl font-medium text-white
+                    bg-[var(--primary)] hover:opacity-90 transition
+                  "
                                 >
                                     Redo
                                 </button>
 
                             </div>
-
                         </div>
-
                     )}
 
                 </div>
-
             </div>
 
         </div>
-
     )
-
 }
