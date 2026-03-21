@@ -1,80 +1,55 @@
-"use client"
-
-import { useEffect, useState } from "react"
-import axios from "axios"
-import Link from "next/link"
 import { ExamType } from "@/models/types"
+import ExamCard from "@/components/ExamCard"
 
-export default function ExamsPage() {
+async function getExams(): Promise<ExamType[]> {
+  try {
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_BASE_URL}/api/exam/list`,
+      { cache: "no-store" }
+    )
 
-  const [exams, setExams] = useState<ExamType[]>([])
+    if (!res.ok) throw new Error("Failed to fetch exams")
 
-  useEffect(() => {
-    const fetchExams = async () => {
-      try {
-        const res = await axios.get("/api/exam/list")
-        setExams(res.data)
-      } catch (error) {
-        console.error(error)
-      }
-    }
+    return res.json()
+  } catch (error) {
+    console.error(error)
+    return []
+  }
+}
 
-    fetchExams()
-  }, [])
-
+export default async function ExamsPage() {
+  const exams = await getExams()
 
   return (
+    <div className="min-h-screen bg-background-light dark:bg-background-dark">
+      <main className="mx-auto flex max-w-7xl flex-1 flex-col px-6 py-8">
 
-    <div className="min-h-screen bg-gray-50 flex justify-center">
+        <div className="layout-content-container flex flex-col flex-1">
 
-      <div className="w-full max-w-4xl p-8">
+          {/* TITLE */}
+          <div className="flex flex-col gap-2 p-4 mb-6 text-left">
+            <h1 className="text-slate-900 dark:text-slate-100 text-3xl md:text-5xl font-extrabold leading-tight tracking-tight">
+              Thư viện Đề thi THPTQG Tiếng Trung
+            </h1>
 
-        <Link href="/">
-          <button className="flex mb-5 items-center gap-2 px-4 py-2 bg-white border border-gray-300 rounded-lg shadow-sm text-gray-700 font-medium hover:bg-gray-100 hover:shadow transition">
-            ← Back
-          </button>
-        </Link>
-        <div className="flex items-center gap-4 mb-8 mt-2">
-          <h1 className="text-3xl font-bold">
-            Available Exams
-          </h1>
+            <p className="text-slate-600 dark:text-slate-400 text-base font-normal">
+              Bám sát cấu trúc đề thi của Bộ Giáo dục & Đào tạo. Giúp bạn tự tin đạt điểm 9+, 10 trong kỳ thi THPTQG sắp tới.
+            </p>
+          </div>
 
-        </div>
-
-        <div className="grid gap-6">
-
-          {exams.map((exam) => (
-
-            <Link
-              key={exam._id?.toString()}
-              href={`/exams/${exam._id}`}
-            >
-
-              <div className="bg-white p-6 rounded-lg shadow hover:shadow-md transition cursor-pointer border">
-
-                <h2 className="text-xl font-semibold">
-                  {exam.title}
-                </h2>
-
-                <p className="text-gray-500 mt-2">
-                  {exam.description}
-                </p>
-
-                <div className="text-sm text-gray-400 mt-3">
-                  {exam.questions.length} questions
-                </div>
-
-              </div>
-
-            </Link>
-
-          ))}
+          {/* GRID */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 p-4">
+            {exams.map((exam, index) => (
+              <ExamCard
+                key={exam._id?.toString()}
+                exam={exam}
+                index={index}
+              />
+            ))}
+          </div>
 
         </div>
-
-      </div>
-
+      </main>
     </div>
-
   )
 }

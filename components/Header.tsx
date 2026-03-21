@@ -1,0 +1,76 @@
+"use client"
+
+import Link from "next/link"
+import { usePathname } from "next/navigation"
+import { useAuth } from "@/context/AuthContext"
+
+export default function Header({
+  onOpenAuth,
+}: {
+  onOpenAuth: (mode: "login" | "register") => void
+}) {
+  const { user, logout } = useAuth()
+  const pathname = usePathname()
+
+  const navClass = (path: string) =>
+    `text-sm font-semibold ${
+      pathname === path
+        ? "text-primary border-b-2 border-primary pb-1"
+        : "text-gray-700 hover:text-primary"
+    }`
+
+  return (
+    <header className="sticky top-0 z-50 border-b border-primary/10 bg-white/80 backdrop-blur-md">
+      <div className="max-w-7xl mx-auto flex items-center justify-between px-6 py-4">
+
+        {/* LOGO */}
+        <div className="flex flex-col">
+          <h1 className="text-xl font-bold text-logo-blue">KAOSHANG</h1>
+          <span className="text-[10px] italic text-logo-blue/60">
+            Hệ thống bộ đề ôn thi THPTQG môn tiếng Trung Quốc
+          </span>
+        </div>
+
+        {/* NAV */}
+        <nav className="hidden lg:flex gap-8 flex-1 justify-center">
+          <Link href="/" className={navClass("/")}>Trang chủ</Link>
+          <Link href="/exams" className={navClass("/exams")}>Đề thi</Link>
+        </nav>
+
+        {/* AUTH */}
+        <div className="flex gap-4 items-center">
+          {!user ? (
+            <>
+              <button
+                onClick={() => onOpenAuth("login")}
+                className="hidden sm:flex px-6 py-2 font-bold hover:bg-gray-100 rounded-lg"
+              >
+                Đăng nhập
+              </button>
+
+              <button
+                onClick={() => onOpenAuth("register")}
+                className="bg-primary text-white px-6 py-2 rounded-lg shadow-lg"
+              >
+                Đăng ký ngay
+              </button>
+            </>
+          ) : (
+            <>
+              <span className="text-sm font-semibold">
+                👋 {user.username}
+              </span>
+
+              <button
+                onClick={logout}
+                className="px-4 py-2 bg-gray-100 rounded-lg hover:bg-gray-200"
+              >
+                Đăng xuất
+              </button>
+            </>
+          )}
+        </div>
+      </div>
+    </header>
+  )
+}
