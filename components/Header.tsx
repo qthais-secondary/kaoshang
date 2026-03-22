@@ -43,14 +43,14 @@ export default function Header({
             <>
               <Link
                 href="/admin/dashboard"
-                className={navClass("/dashboard")}
+                className={navClass("/admin/dashboard")}
               >
                 Dashboard
               </Link>
 
               <Link
-                href="/dashboard/admin/exams"
-                className={navClass("/dashboard/admin/exams")}
+                href="/admin/manage"
+                className={navClass("/admin/manage")}
               >
                 Quản lý đề
               </Link>

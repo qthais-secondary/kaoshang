@@ -3,17 +3,30 @@
 import Link from "next/link"
 import { ExamType } from "@/models/types"
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward"
+
+// 🔥 MUI ICONS
+import MenuBookIcon from "@mui/icons-material/MenuBook"
+import EditNoteIcon from "@mui/icons-material/EditNote"
+import HistoryEduIcon from "@mui/icons-material/HistoryEdu"
+import SchoolIcon from "@mui/icons-material/School"
+import AutoStoriesIcon from "@mui/icons-material/AutoStories"
+import DescriptionIcon from "@mui/icons-material/Description"
+import QuizIcon from "@mui/icons-material/Quiz"
+import AssignmentIcon from "@mui/icons-material/Assignment"
+import ImportContactsIcon from "@mui/icons-material/ImportContacts"
+import DrawIcon from "@mui/icons-material/Draw"
+
 const iconList = [
-  "menu_book",
-  "edit_note",
-  "history_edu",
-  "school",
-  "auto_stories",
-  "description",
-  "quiz",
-  "assignment",
-  "import_contacts",
-  "draw",
+  MenuBookIcon,
+  EditNoteIcon,
+  HistoryEduIcon,
+  SchoolIcon,
+  AutoStoriesIcon,
+  DescriptionIcon,
+  QuizIcon,
+  AssignmentIcon,
+  ImportContactsIcon,
+  DrawIcon,
 ]
 
 export default function ExamCard({
@@ -23,22 +36,15 @@ export default function ExamCard({
   exam: ExamType
   index: number
 }) {
-  const icon = iconList[index % iconList.length]
+  const Icon = iconList[index % iconList.length]
 
   return (
     <Link href={`/exams/${exam._id}`} className="group">
-      <div className="flex flex-col bg-white dark:bg-slate-900 rounded-xl shadow-sm border border-slate-100 dark:border-slate-800 hover:shadow-md transition-shadow overflow-hidden cursor-pointer">
+      <div className="flex flex-col bg-white dark:bg-slate-900 rounded-2xl shadow-sm border border-slate-200 dark:border-slate-800 hover:shadow-xl transition-all duration-300 overflow-hidden cursor-pointer">
 
         {/* ICON */}
-        <div className="bg-blue-50/50 dark:bg-slate-800/50 p-6 flex items-center justify-center">
-          <span
-            className="material-symbols-outlined text-5xl text-primary/60 dark:text-primary/40"
-            style={{
-              fontVariationSettings: '"FILL" 0, "wght" 200, "GRAD" 0, "opsz" 48',
-            }}
-          >
-            {icon}
-          </span>
+        <div className="bg-gradient-to-br from-blue-50 to-blue-100 dark:from-slate-800 dark:to-slate-900 p-8 flex items-center justify-center">
+          <Icon className="text-5xl text-primary/60 group-hover:text-primary group-hover:scale-110 transition-all duration-300" />
         </div>
 
         {/* CONTENT */}
@@ -47,8 +53,9 @@ export default function ExamCard({
             {exam.title}
           </h3>
 
+          {/* BUTTON */}
           <div className="mt-auto">
-            <div className="w-full bg-primary group-hover:bg-primary/90 text-white font-bold py-2.5 rounded-lg text-sm transition-colors flex items-center justify-center gap-2">
+            <div className="w-full bg-primary group-hover:bg-primary/90 text-white font-bold py-2.5 rounded-lg text-sm transition-all duration-300 flex items-center justify-center gap-2 shadow-sm group-hover:shadow-md">
               Bắt đầu thi
               <ArrowForwardIcon fontSize="small" />
             </div>
