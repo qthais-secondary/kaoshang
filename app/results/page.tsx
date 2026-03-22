@@ -1,8 +1,4 @@
-"use client";
-
-import { useEffect, useState } from "react";
-import axios from "axios";
-import { useAuth } from "@/context/AuthContext";
+import { cookies } from "next/headers";
 
 type ResultType = {
   _id: string;
@@ -12,32 +8,31 @@ type ResultType = {
   createdAt: string;
 };
 
-export default function ResultPage() {
-  const [results, setResults] = useState<ResultType[]>([]);
-  const [loading, setLoading] = useState(true);
-  const {user} = useAuth()
-  useEffect(() => {
-    const fetchResults = async () => {
-      try {
-        const res = await axios.get(`/api/result/user/${user?._id}`);
-        setResults(res.data.results);
-      } catch (err) {
-        console.error(err);
-      } finally {
-        setLoading(false);
-      }
-    };
+async function getResults(): Promise<ResultType[]> {
+  const cookieStore = await cookies()
+  const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/result/user`, {
+     headers: {
+      Cookie: cookieStore.toString(), // 🔥 QUAN TRỌNG
+    },
+    cache: "no-store",
+  })
 
-    fetchResults();
-  }, [user]);
+  if (!res.ok) return []
 
-  const formatDate = (date: string) => {
-    return new Date(date).toLocaleDateString("vi-VN", {
+  const data = await res.json()
+  console.log({data})
+  return data.results
+}
+
+export default async function ResultPage() {
+  const results = await getResults();
+
+  const formatDate = (date: string) =>
+    new Date(date).toLocaleDateString("vi-VN", {
       day: "2-digit",
       month: "short",
       year: "numeric",
     });
-  };
 
   const formatDuration = (sec: number) => {
     const m = Math.floor(sec / 60);
@@ -46,14 +41,10 @@ export default function ResultPage() {
   };
 
   const getColor = (p: number) => {
-    if (p >= 90) return "bg-green-500 text-green-600";
-    if (p >= 70) return "bg-primary text-slate-900";
-    return "bg-orange-500 text-orange-600";
+    if (p >= 90) return "bg-green-500";
+    if (p >= 70) return "bg-primary";
+    return "bg-orange-500";
   };
-
-  if (loading) {
-    return <div className="p-10">Loading...</div>;
-  }
 
   return (
     <main className="flex-1 max-w-7xl mx-auto w-full p-6 md:p-10 space-y-8">
@@ -108,9 +99,9 @@ export default function ResultPage() {
                   <div className="flex items-center gap-2">
                     <div className="w-12 bg-slate-200 rounded-full h-1.5">
                       <div
-                        className={`h-1.5 rounded-full ${
-                          getColor(r.percentage).split(" ")[0]
-                        }`}
+                        className={`h-1.5 rounded-full ${getColor(
+                          r.percentage
+                        )}`}
                         style={{ width: `${r.percentage}%` }}
                       />
                     </div>
@@ -138,7 +129,6 @@ export default function ResultPage() {
           </tbody>
         </table>
 
-        {/* Empty state */}
         {results.length === 0 && (
           <div className="p-10 text-center text-slate-500">
             Chưa có dữ liệu

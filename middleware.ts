@@ -1,20 +1,58 @@
-import { NextResponse } from "next/server"
-import type { NextRequest } from "next/server"
+import { NextResponse } from "next/server";
+import type { NextRequest } from "next/server";
+import { jwtVerify } from "jose";
 
-export function middleware(req: NextRequest) {
+type TokenPayload = {
+  userId: string;
+  username: string;
+  role: string;
+};
 
-  const admin = req.cookies.get("admin")
-
-  if (!admin && req.nextUrl.pathname.startsWith("/admin/create")) {
-
-    return NextResponse.redirect(new URL("/admin", req.url))
-
+export async function middleware(req: NextRequest) {
+  const { pathname } = req.nextUrl;
+  const token = req.cookies.get("token")?.value;
+  console.log({ secret: process.env.JWT_SECRET });
+  // 🟡 public
+  if (
+    pathname.startsWith("/login") ||
+    pathname.startsWith("/register") ||
+    pathname.startsWith("/api/auth")
+  ) {
+    return NextResponse.next();
   }
 
-  return NextResponse.next()
+  if (!token) {
+    return NextResponse.redirect(new URL("/", req.url));
+  }
+  let user: TokenPayload;
 
+  try {
+    const secret = new TextEncoder().encode(process.env.JWT_SECRET);
+    const { payload } = await jwtVerify(token, secret);
+
+    user = payload as TokenPayload;
+  } catch (err) {
+    console.log({ err });
+    return NextResponse.redirect(new URL("/", req.url));
+  }
+
+  // 🔴 admin check'
+  console.log({ condition: user.role === "admin" });
+  if (pathname.startsWith("/admin") && user.role.trim() !== "admin") {
+    console.log("Reach here");
+    return NextResponse.redirect(new URL("/", req.url));
+  }
+
+  // 🔥 attach user vào header
+  const requestHeaders = new Headers(req.headers);
+
+  return NextResponse.next({
+    request: {
+      headers: requestHeaders,
+    },
+  });
 }
 
 export const config = {
-  matcher: ["/admin/create"]
-}
+  matcher: ["/result/:path*", "/exam/:path*", "/admin/:path*"],
+};

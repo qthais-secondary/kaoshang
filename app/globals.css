@@ -40,3 +40,22 @@ body {
 .animate-fadeIn {
   animation: fadeIn 0.2s ease-out;
 }
+@keyframes shimmer-blue {
+  0% {
+    background-position: -700px 0;
+  }
+  100% {
+    background-position: 700px 0;
+  }
+}
+
+.shimmer-blue {
+  background: linear-gradient(
+    90deg,
+    #e6f2fb 0%,
+    #cfe7f9 50%,
+    #e6f2fb 100%
+  );
+  background-size: 800px 100%;
+  animation: shimmer-blue 1.4s infinite linear;
+}

@@ -10,6 +10,7 @@ export default function Header({
   onOpenAuth: (mode: "login" | "register") => void
 }) {
   const { user, logout } = useAuth()
+  console.log({role: user?.role})
   const pathname = usePathname()
 
   const navClass = (path: string) =>
@@ -35,6 +36,26 @@ export default function Header({
         <nav className="hidden lg:flex gap-8 flex-1 justify-center">
           <Link href="/" className={navClass("/")}>Trang chủ</Link>
           <Link href="/exams" className={navClass("/exams")}>Đề thi</Link>
+          <Link href="/results" className={navClass("/results")}>Lịch sử</Link>
+
+          {/* 🔥 ADMIN NAV */}
+          {user?.role === "admin" && (
+            <>
+              <Link
+                href="/admin/dashboard"
+                className={navClass("/dashboard")}
+              >
+                Dashboard
+              </Link>
+
+              <Link
+                href="/dashboard/admin/exams"
+                className={navClass("/dashboard/admin/exams")}
+              >
+                Quản lý đề
+              </Link>
+            </>
+          )}
         </nav>
 
         {/* AUTH */}
@@ -57,8 +78,14 @@ export default function Header({
             </>
           ) : (
             <>
+              {/* 🔥 ROLE BADGE */}
               <span className="text-sm font-semibold">
                 👋 {user.username}
+                {user.role === "admin" && (
+                  <span className="ml-2 text-xs bg-red-500 text-white px-2 py-0.5 rounded">
+                    ADMIN
+                  </span>
+                )}
               </span>
 
               <button

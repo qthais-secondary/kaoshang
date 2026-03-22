@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server"
 import { connectDB } from "@/lib/mongodb"
 import { User } from "@/models/User"
-
+import jwt from "jsonwebtoken"
 export async function POST(req: Request) {
   try {
     await connectDB()
@@ -24,7 +24,20 @@ export async function POST(req: Request) {
       )
     }
 
-    return NextResponse.json({
+    // 🔐 Tạo JWT token
+    console.log({secret: process.env.JWT_SECRET})
+    const token = jwt.sign(
+      {
+        userId: user._id,
+        username: user.username,
+        role: user.role,
+      },
+      process.env.JWT_SECRET!, // nhớ set env
+      { expiresIn: "7d" }
+    )
+
+    // 🍪 Set cookie (QUAN TRỌNG cho SSR)
+    const response = NextResponse.json({
       message: "Login thành công",
       user: {
         _id: user._id.toString(),
@@ -32,6 +45,16 @@ export async function POST(req: Request) {
         role: user.role,
       },
     })
+
+    response.cookies.set("token", token, {
+      httpOnly: true, // 🔐 chống XSS
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "lax",
+      path: "/",
+      maxAge: 60 * 60 * 24 * 7, // 7 ngày
+    })
+
+    return response
   } catch (error) {
     return NextResponse.json(
       { message: "Server error" },

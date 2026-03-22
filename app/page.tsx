@@ -130,11 +130,6 @@ export default function Home() {
           </button>
         </div>
       </section>
-
-      {/* FOOTER */}
-      <footer className="border-t py-10 text-center text-gray-500">
-        © 2026 KAOSHANG. All rights reserved.
-      </footer>
     </div>
   )
 }
