@@ -22,7 +22,7 @@ export default function ExamPage() {
         if (!id) return
 
         const fetchExam = async () => {
-            const res = await axios.get<ExamType>(`/api/exam/get?id=${id}`)
+            const res = await axios.get<ExamType>(`/api/exam/${id}`)
 
             setExam(res.data)
             setAnswers(new Array(res.data.questions.length).fill(-1))
