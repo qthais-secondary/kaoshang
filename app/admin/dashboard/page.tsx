@@ -195,7 +195,7 @@ export default function DashboardPage() {
                           <th className="p-2 text-left">Question</th>
                           <th className="p-2 text-center">Wrong %</th>
                           <th className="p-2 text-center">Wrong</th>
-                          <th className="p-2 text-center">Attempts</th>
+                          <th className="p-2 text-center">Participants</th>
                         </tr>
                       </thead>
 

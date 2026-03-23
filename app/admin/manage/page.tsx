@@ -68,6 +68,7 @@ export default function AdminExamsPage() {
   const handleEdit = async (exam: Exam) => {
     try {
       const res = await axios.get(`/api/exam/${exam._id}`)
+      console.log({res})
 
       setEditing(exam)
 
@@ -123,7 +124,7 @@ export default function AdminExamsPage() {
 
   return (
 
-    <div className="min-h-screen bg-gray-50 p-10">
+    <div className="min-h-screen bg-background-light p-10">
 
       <div className="max-w-7xl mx-auto">
 
@@ -136,7 +137,7 @@ export default function AdminExamsPage() {
 
           <button
             onClick={handleCreate}
-            className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700"
+            className="bg-primary hover:opacity-90 text-white px-4 py-2 rounded-xl transition"
           >
             + Tạo đề
           </button>
@@ -150,7 +151,7 @@ export default function AdminExamsPage() {
 
             <div
               key={exam._id}
-              className="bg-white border border-gray-200 rounded-2xl p-5 shadow-sm hover:shadow-md"
+              className="bg-white border border-gray-100 rounded-2xl p-5 shadow-sm hover:shadow-md transition hover:-translate-y-1"
             >
 
               <h2 className="font-semibold text-gray-800 mb-2">
@@ -191,7 +192,7 @@ export default function AdminExamsPage() {
       {open && (
         <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50 overflow-auto">
 
-          <div className="bg-white rounded-2xl p-6 w-full max-w-3xl shadow-lg">
+          <div className="bg-white rounded-2xl p-6 w-full max-w-3xl shadow-xl animate-fadeIn">
 
             <h2 className="text-xl font-semibold mb-4">
               {editing ? "Edit Exam" : "Create Exam"}
@@ -204,7 +205,7 @@ export default function AdminExamsPage() {
               onChange={(e) =>
                 setForm(prev => ({ ...prev, title: e.target.value }))
               }
-              className="w-full border rounded-lg p-2 mb-3"
+              className="w-full border border-gray-200 rounded-xl px-3 py-2 focus:outline-none focus:ring-2 focus:ring-primary transition"
             />
 
             {/* DESCRIPTION */}
@@ -222,7 +223,7 @@ export default function AdminExamsPage() {
 
               {form.questions.map((q, index) => (
 
-                <div key={index} className="border rounded-xl p-4 bg-gray-50">
+                <div key={index} className="border border-gray-200 rounded-2xl p-4 bg-white shadow-sm">
 
                   <div className="flex justify-between mb-2">
                     <h4>Question {index + 1}</h4>
@@ -253,10 +254,11 @@ export default function AdminExamsPage() {
                   {/* OPTIONS */}
                   {q.options.map((opt, i) => (
 
-                    <div key={i} className="flex gap-2 mb-1">
+                    <div key={i} className="flex gap-2 mb-2 items-center">
 
                       <input
                         type="radio"
+                        className="accent-primary"
                         checked={q.correctAnswer === i}
                         onChange={() => {
                           const newQs = [...form.questions]
@@ -299,7 +301,7 @@ export default function AdminExamsPage() {
                       newQs[index].difficulty = e.target.value
                       setForm(prev => ({ ...prev, questions: newQs }))
                     }}
-                    className="mt-2 border rounded p-1"
+                     className="mt-2 border border-gray-200 rounded-lg px-2 py-1 focus:ring-2 focus:ring-primary"
                   >
                     <option value="easy">Easy</option>
                     <option value="medium">Medium</option>
@@ -329,7 +331,7 @@ export default function AdminExamsPage() {
                   ]
                 }))
               }}
-              className="mt-4 text-blue-600"
+              className="mt-4 text-primary font-medium hover:underline"
             >
               + Add Question
             </button>
@@ -339,14 +341,14 @@ export default function AdminExamsPage() {
 
               <button
                 onClick={() => setOpen(false)}
-                className="px-3 py-1 border rounded"
+                className="px-4 py-2 border border-gray-200 rounded-xl hover:bg-gray-100 transition"
               >
                 Cancel
               </button>
 
               <button
                 onClick={handleSubmit}
-                className="px-4 py-1 bg-blue-600 text-white rounded"
+                className="px-4 py-2 bg-primary text-white rounded-xl hover:opacity-90 transition"
               >
                 Save
               </button>
