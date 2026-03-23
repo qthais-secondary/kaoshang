@@ -20,7 +20,6 @@ async function getResults(): Promise<ResultType[]> {
   if (!res.ok) return []
 
   const data = await res.json()
-  console.log({data})
   return data.results
 }
 

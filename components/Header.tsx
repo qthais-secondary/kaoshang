@@ -10,7 +10,6 @@ export default function Header({
   onOpenAuth: (mode: "login" | "register") => void
 }) {
   const { user, logout } = useAuth()
-  console.log({role: user?.role})
   const pathname = usePathname()
 
   const navClass = (path: string) =>
