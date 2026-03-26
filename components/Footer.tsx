@@ -34,7 +34,7 @@ const Footer = () => {
           <div>
             <p className="text-sm text-gray-400 mb-1">Địa chỉ</p>
             <p className="font-semibold leading-relaxed">
-              28 An Dương Vương, Phường Chợ Quán, TP.HCM
+              280 An Dương Vương, Phường Chợ Quán, TP.HCM
             </p>
           </div>
         </div>
