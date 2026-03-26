@@ -73,8 +73,7 @@ export default function Home() {
               Thông tin dự án nghiên cứu
             </h2>
             <p className="text-gray-400">
-              Trang web KAOSHANG là sản phẩm đề tài NCKHSV ĐH Sư phạm TP.HCM,
-              hỗ trợ học sinh ôn thi THPTQG môn Tiếng Trung.
+              Trang web KAOSHANG là sản phẩm đề tài NCKHSV Trường Đại học Sư phạm Thành phố Hồ Chí Minh năm 2025-2026, nhằm ứng dụng công nghệ vào giáo dục, hỗ trợ tối đa cho học sinh Việt Nam trong việc ôn tập cho kỳ thi THPTQG môn Tiếng Trung.
             </p>
           </div>
 
