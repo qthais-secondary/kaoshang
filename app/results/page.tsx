@@ -66,9 +66,6 @@ export default async function ResultPage() {
             className="px-4 py-2 border rounded-lg text-sm"
           />
 
-          <button className="px-4 py-2 bg-primary text-white rounded-lg text-sm font-semibold">
-            + Đề thi mới
-          </button>
         </div>
 
         {/* Table */}

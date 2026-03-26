@@ -12,7 +12,7 @@
 }
 
 body {
-  font-family: "Lexend", sans-serif;
+  /* font-family: "Lexend", sans-serif; */
   background: var(--bg-light);
 } /* Tailwind custom */
 .bg-primary {

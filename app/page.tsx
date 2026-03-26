@@ -1,3 +1,5 @@
+import Countdown from "@/components/Countdown";
+
 export default function Home() {
   return (
     <div className="bg-background-light font-display">
@@ -21,11 +23,6 @@ export default function Home() {
             Giúp bạn tự tin đạt điểm 9+, 10.
           </p>
 
-          <button
-            className="bg-primary text-white px-8 py-4 rounded-lg shadow-xl"
-          >
-            Bắt đầu học ngay →
-          </button>
         </div>
 
         {/* RIGHT */}
@@ -65,20 +62,7 @@ export default function Home() {
       </section>
 
       {/* COUNTDOWN */}
-      <section className="bg-[#eaf2f6] py-16 text-center">
-        <h3 className="text-primary font-bold mb-10 tracking-widest">
-          ĐẾM NGƯỢC ĐẾN KỲ THI THPTQG 2026 (DỰ KIẾN)
-        </h3>
-
-        <div className="flex justify-center">
-          <div className="flex flex-col items-center">
-            <div className="w-40 h-28 flex items-center justify-center text-4xl font-black bg-white rounded-lg shadow">
-              86
-            </div>
-            <span className="text-sm text-gray-500 mt-2">NGÀY</span>
-          </div>
-        </div>
-      </section>
+      <Countdown target="2026-06-12T00:00:00" />
 
       {/* INFO SECTION */}
       <section className="max-w-7xl mx-auto px-6 py-20">
@@ -105,7 +89,9 @@ export default function Home() {
               <p className="text-sm text-gray-300">
                 Nguyễn Đặng Ngọc Trâm <br />
                 Võ Thị Thu Hà <br />
-                Nguyễn Thanh Huệ
+                Nguyễn Thanh Huệ <br />
+                Đỗ Trần Thanh Ngọc <br />
+                Võ Thị Mỹ Hạnh
               </p>
             </div>
           </div>
@@ -113,23 +99,6 @@ export default function Home() {
       </section>
 
       {/* CTA */}
-      <section className="max-w-7xl mx-auto px-6 pb-20">
-        <div className="bg-primary text-white text-center py-16 rounded-xl">
-          <h2 className="text-3xl font-black mb-4">
-            Sẵn sàng để bứt phá điểm số?
-          </h2>
-
-          <p className="mb-8 text-white/90">
-            Tham gia cùng các học sinh khác trên KAOSHANG
-          </p>
-
-          <button
-            className="bg-white text-primary px-10 py-4 rounded-full font-bold"
-          >
-            Bắt đầu hoàn toàn miễn phí
-          </button>
-        </div>
-      </section>
     </div>
   )
 }
