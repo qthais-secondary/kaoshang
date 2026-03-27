@@ -11,7 +11,6 @@ type TokenPayload = {
 export async function middleware(req: NextRequest) {
   const { pathname } = req.nextUrl;
   const token = req.cookies.get("token")?.value;
-  console.log({ secret: process.env.JWT_SECRET });
   // 🟡 public
   if (
     pathname.startsWith("/login") ||
@@ -37,9 +36,7 @@ export async function middleware(req: NextRequest) {
   }
 
   // 🔴 admin check'
-  console.log({ condition: user.role === "admin" });
   if (pathname.startsWith("/admin") && user.role.trim() !== "admin") {
-    console.log("Reach here");
     return NextResponse.redirect(new URL("/", req.url));
   }
 
