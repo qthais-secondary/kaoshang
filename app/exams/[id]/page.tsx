@@ -175,7 +175,7 @@ export default function ExamPage() {
                             className="mt-6 p-6 rounded-xl border border-gray-200 bg-gray-50"
                         >
 
-                            <h2 className="font-semibold text-base mb-4 text-gray-800">
+                            <h2 className="font-semibold text-base mb-4 text-gray-800 whitespace-pre-line">
                                 {qi + 1}. {q.question}
                             </h2>
 
