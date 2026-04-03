@@ -163,7 +163,7 @@ export default function ExamPage() {
 
                 <div className="bg-white p-8 rounded-2xl shadow-md border border-gray-100">
 
-                    <h1 className="text-2xl font-bold mb-6 text-gray-800">
+                    <h1 className="text-2xl font-bold mb-6 text-gray-800 whitespace-pre-line">
                         {exam.title}
                     </h1>
 
