@@ -24,8 +24,6 @@ export async function POST(req: Request) {
       )
     }
 
-    // 🔐 Tạo JWT token
-    console.log({secret: process.env.JWT_SECRET})
     const token = jwt.sign(
       {
         userId: user._id,

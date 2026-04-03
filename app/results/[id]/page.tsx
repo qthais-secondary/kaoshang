@@ -17,7 +17,6 @@ export default function ResultPage() {
 
     const fetchResult = async () => {
       const res = await axios.get<ResultType>(`/api/result/${id}`)
-      console.log(res.data)
       setResult(res.data)
     }
 
