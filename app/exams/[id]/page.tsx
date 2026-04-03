@@ -249,7 +249,7 @@ export default function ExamPage() {
                                     onClick={() => {
                                         setResult(null)
                                         setAnswers(new Array(exam.questions.length).fill(-1))
-                                        setTime(600)
+                                        setTime(3600)
                                     }}
                                     className="
                     px-4 py-2 rounded-xl font-medium text-white
