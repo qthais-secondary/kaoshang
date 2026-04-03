@@ -15,7 +15,7 @@ export default function ExamPage() {
     const [answers, setAnswers] = useState<number[]>([])
     const [result, setResult] = useState<SubmitResponse | null>(null)
     const [isSubmit, setIsSubmit] = useState(false)
-    const [time, setTime] = useState(600)
+    const [time, setTime] = useState(3600) // 60 phút = 3600 giây
 
     // FETCH EXAM
     useEffect(() => {
@@ -249,7 +249,7 @@ export default function ExamPage() {
                                     onClick={() => {
                                         setResult(null)
                                         setAnswers(new Array(exam.questions.length).fill(-1))
-                                        setTime(3600)
+                                        setTime(600)
                                     }}
                                     className="
                     px-4 py-2 rounded-xl font-medium text-white
