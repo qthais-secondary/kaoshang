@@ -24,12 +24,15 @@ export default function Header({
       <div className="max-w-7xl mx-auto flex items-center justify-between px-6 py-4">
 
         {/* LOGO */}
-        <div className="flex flex-col">
-          <h1 className="text-xl font-bold text-logo-blue">KAOSHANG</h1>
-          <span className="text-[10px] italic text-logo-blue/60">
-            Hệ thống bộ đề ôn thi THPTQG môn tiếng Trung Quốc
-          </span>
-        </div>
+        <div className="flex items-center py-2">
+  <Link href="/" className="block">
+    <img 
+      src="/Logo.png" 
+      alt="KAOSHANG Logo" 
+      className="h-14 w-auto object-contain hover:opacity-90 transition-opacity" 
+    />
+  </Link>
+</div>
 
         {/* NAV */}
         <nav className="hidden lg:flex gap-8 flex-1 justify-center">
