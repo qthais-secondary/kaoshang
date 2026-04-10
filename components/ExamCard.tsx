@@ -44,12 +44,12 @@ export default function ExamCard({
 
         {/* ICON */}
         <div className="bg-gradient-to-br from-blue-50 to-blue-100 dark:from-slate-800 dark:to-slate-900 p-8 flex items-center justify-center">
-          <Icon className="text-5xl text-primary/60 group-hover:text-primary group-hover:scale-110 transition-all duration-300" />
+          <Icon className="text-5xl text-white group-hover:text-white/80 group-hover:scale-110 transition-all duration-300" />
         </div>
 
         {/* CONTENT */}
-        <div className="p-6 flex flex-col flex-1">
-          <h3 className="text-slate-900 dark:text-slate-100 text-base font-bold mb-6 min-h-[48px] line-clamp-2">
+        <div className="p-6 flex flex-col flex-1 text-center">
+          <h3 className="text-slate-900 dark:text-slate-100 text-2xl font-bold mb-6 min-h-[48px] line-clamp-2">
             {exam.title}
           </h3>
 

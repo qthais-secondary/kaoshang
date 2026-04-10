@@ -20,7 +20,7 @@ export default function Home() {
 
           <p className="text-gray-600 max-w-lg">
             Nền tảng ôn luyện thông minh, bám sát cấu trúc đề thi của Bộ Giáo dục.
-            Giúp bạn tự tin đạt điểm 9+, 10.
+            Đồng hành cùng các bạn học sinh trong kỳ thi THPTQG
           </p>
         </div>
 

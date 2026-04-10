@@ -27,14 +27,10 @@ export default async function ExamsPage() {
         <div className="layout-content-container flex flex-col flex-1">
 
           {/* TITLE */}
-          <div className="flex flex-col gap-2 p-4 mb-6 text-left">
-            <h1 className="text-slate-900 dark:text-slate-100 text-3xl md:text-5xl font-extrabold leading-tight tracking-tight">
+          <div className="flex flex-col items-center gap-2 p-4 mb-6 text-center">
+            <h1 className="text-gray-500 dark:text-gray-600 text-3xl md:text-5xl font-extrabold leading-tight tracking-tight">
               Thư viện Đề thi THPTQG Tiếng Trung
             </h1>
-
-            <p className="text-slate-600 dark:text-slate-400 text-base font-normal">
-              Bám sát cấu trúc đề thi của Bộ Giáo dục & Đào tạo. Giúp bạn tự tin đạt điểm 9+, 10 trong kỳ thi THPTQG sắp tới.
-            </p>
           </div>
 
           {/* GRID */}
